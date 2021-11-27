@@ -12,6 +12,7 @@
 		EDA518EB2751D33A00DE66F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA518EA2751D33A00DE66F1 /* Assets.xcassets */; };
 		EDA518EE2751D33A00DE66F1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA518ED2751D33A00DE66F1 /* Preview Assets.xcassets */; };
 		EDA518F62751D3C100DE66F1 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA518F52751D3C100DE66F1 /* MetalView.swift */; };
+		EDA518F82751D59000DE66F1 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EDA518F72751D59000DE66F1 /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		EDA518ED2751D33A00DE66F1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDA518EF2751D33A00DE66F1 /* HelloTriangle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HelloTriangle.entitlements; sourceTree = "<group>"; };
 		EDA518F52751D3C100DE66F1 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
+		EDA518F72751D59000DE66F1 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +40,7 @@
 		EDA518DA2751D33A00DE66F1 = {
 			isa = PBXGroup;
 			children = (
+				EDA518F72751D59000DE66F1 /* Shaders.metal */,
 				EDA518E52751D33A00DE66F1 /* HelloTriangle */,
 				EDA518E42751D33A00DE66F1 /* Products */,
 			);
@@ -56,10 +59,10 @@
 			children = (
 				EDA518E62751D33A00DE66F1 /* HelloTriangleApp.swift */,
 				EDA518E82751D33A00DE66F1 /* ContentView.swift */,
+				EDA518F52751D3C100DE66F1 /* MetalView.swift */,
 				EDA518EA2751D33A00DE66F1 /* Assets.xcassets */,
 				EDA518EF2751D33A00DE66F1 /* HelloTriangle.entitlements */,
 				EDA518EC2751D33A00DE66F1 /* Preview Content */,
-				EDA518F52751D3C100DE66F1 /* MetalView.swift */,
 			);
 			path = HelloTriangle;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDA518F82751D59000DE66F1 /* Shaders.metal in Sources */,
 				EDA518E92751D33A00DE66F1 /* ContentView.swift in Sources */,
 				EDA518F62751D3C100DE66F1 /* MetalView.swift in Sources */,
 				EDA518E72751D33A00DE66F1 /* HelloTriangleApp.swift in Sources */,
