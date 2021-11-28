@@ -8,6 +8,10 @@
 #include <metal_stdlib>
 using namespace metal;
 
+vertex float4 simple_vertex(){
+    return float4(1);
+}
+
 fragment half4 paint_pink_screen(){
     return half4(1);
 }
