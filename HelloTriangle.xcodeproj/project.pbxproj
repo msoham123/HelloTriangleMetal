@@ -13,6 +13,7 @@
 		EDA518EE2751D33A00DE66F1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA518ED2751D33A00DE66F1 /* Preview Assets.xcassets */; };
 		EDA518F62751D3C100DE66F1 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA518F52751D3C100DE66F1 /* MetalView.swift */; };
 		EDA518F82751D59000DE66F1 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EDA518F72751D59000DE66F1 /* Shaders.metal */; };
+		EDA518FB2754444F00DE66F1 /* ShaderDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA518FA2754444F00DE66F1 /* ShaderDefinitions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,8 @@
 		EDA518EF2751D33A00DE66F1 /* HelloTriangle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HelloTriangle.entitlements; sourceTree = "<group>"; };
 		EDA518F52751D3C100DE66F1 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		EDA518F72751D59000DE66F1 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		EDA518F92754444F00DE66F1 /* HelloTriangle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HelloTriangle-Bridging-Header.h"; sourceTree = "<group>"; };
+		EDA518FA2754444F00DE66F1 /* ShaderDefinitions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShaderDefinitions.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,8 @@
 				EDA518EA2751D33A00DE66F1 /* Assets.xcassets */,
 				EDA518EF2751D33A00DE66F1 /* HelloTriangle.entitlements */,
 				EDA518EC2751D33A00DE66F1 /* Preview Content */,
+				EDA518FA2754444F00DE66F1 /* ShaderDefinitions.m */,
+				EDA518F92754444F00DE66F1 /* HelloTriangle-Bridging-Header.h */,
 			);
 			path = HelloTriangle;
 			sourceTree = "<group>";
@@ -107,6 +112,7 @@
 				TargetAttributes = {
 					EDA518E22751D33A00DE66F1 = {
 						CreatedOnToolsVersion = 13.1;
+						LastSwiftMigration = 1310;
 					};
 				};
 			};
@@ -149,6 +155,7 @@
 				EDA518E92751D33A00DE66F1 /* ContentView.swift in Sources */,
 				EDA518F62751D3C100DE66F1 /* MetalView.swift in Sources */,
 				EDA518E72751D33A00DE66F1 /* HelloTriangleApp.swift in Sources */,
+				EDA518FB2754444F00DE66F1 /* ShaderDefinitions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +282,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HelloTriangle/HelloTriangle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -293,6 +301,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = msoham123.HelloTriangle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "HelloTriangle/HelloTriangle-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -302,6 +312,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HelloTriangle/HelloTriangle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -320,6 +331,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = msoham123.HelloTriangle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "HelloTriangle/HelloTriangle-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
