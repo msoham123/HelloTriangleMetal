@@ -94,12 +94,23 @@ struct MetalView: NSViewRepresentable {
         // Create rendering pipeline, which loads shaders using device and outputs to the MTKView
         func createRenderPipelineState(){
             
-//            // Create a render pipeline descriptor
-//            let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
-//
-//            // Add shaders/functions to our pipeline
-//            renderPipelineDescriptor.vertexFunction = library.makeFunction(name: "vertexShader")
-//            renderPipelineDescriptor.fragmentFunction = library.makeFunction(name: "fragmentShader")
+            // Create a render pipeline descriptor
+            let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
+
+            // Add shaders/functions to our pipeline
+            renderPipelineDescriptor.vertexFunction = library.makeFunction(name: "vertexShader")
+            renderPipelineDescriptor.fragmentFunction = library.makeFunction(name: "fragmentShader")
+            
+            // Output pixel format should match the pixel format of the metal kit view
+//            renderPipelineDescriptor.colorAttachments[0].pixelFormat
+            
+            
+            do{
+                try device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
+            }catch{
+                fatalError("[!] Failed to create Render Pipeline State")
+            }
+            
         }
         
         func initMetal(){
