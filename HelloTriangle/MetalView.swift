@@ -51,12 +51,7 @@ struct MetalView: NSViewRepresentable {
         
         init(_ parent: MetalView) {
             self.parent = parent
-            guard let metalDevice = MTLCreateSystemDefaultDevice() else{
-                fatalError("[!] No appropriate Metal Devices found.")
-            }
-            self.device = metalDevice;
-            self.library = self.device.makeDefaultLibrary()!
-            self.commandQueue = self.device.makeCommandQueue()!
+            initMetal()
             super.init()
         }
         
@@ -105,6 +100,15 @@ struct MetalView: NSViewRepresentable {
 //            // Add shaders/functions to our pipeline
 //            renderPipelineDescriptor.vertexFunction = library.makeFunction(name: "vertexShader")
 //            renderPipelineDescriptor.fragmentFunction = library.makeFunction(name: "fragmentShader")
+        }
+        
+        func initMetal(){
+            guard let metalDevice = MTLCreateSystemDefaultDevice() else{
+                fatalError("[!] No appropriate Metal Devices found.")
+            }
+            self.library = metalDevice.makeDefaultLibrary()
+            self.commandQueue = metalDevice.makeCommandQueue()
+            self.device = metalDevice
         }
         
     }
