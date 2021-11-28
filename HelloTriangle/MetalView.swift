@@ -46,6 +46,7 @@ struct MetalView: NSViewRepresentable {
         var commandQueue: MTLCommandQueue!
         var device: MTLDevice!
         var library: MTLLibrary!
+        var renderPipelineState:MTLRenderPipelineState!
 
         
         init(_ parent: MetalView) {
@@ -94,7 +95,20 @@ struct MetalView: NSViewRepresentable {
             commandBuffer.commit()
                         
         }
+        
+        // Create rendering pipeline, which loads shaders using device and outputs to the MTKView
+        func createRenderPipelineState(){
+            
+//            // Create a render pipeline descriptor
+//            let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
+//
+//            // Add shaders/functions to our pipeline
+//            renderPipelineDescriptor.vertexFunction = library.makeFunction(name: "vertexShader")
+//            renderPipelineDescriptor.fragmentFunction = library.makeFunction(name: "fragmentShader")
+        }
+        
     }
+    
 }
 
 struct MetalView_Previews: PreviewProvider {
