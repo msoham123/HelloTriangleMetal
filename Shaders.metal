@@ -11,3 +11,4 @@ using namespace metal;
 fragment half4 paint_pink_screen(){
     return half4(1);
 }
+

@@ -40,7 +40,7 @@ struct MetalView: NSViewRepresentable {
     
     class Coordinator : NSObject, MTKViewDelegate {
         
-        var parent: MetalView
+        var parent: MetalView!
         
         init(_ parent: MetalView) {
             self.parent = parent
@@ -59,6 +59,17 @@ struct MetalView: NSViewRepresentable {
             }
             
             // Rendering commands go here
+            
+        
+            let renderPassDescriptor: MTLRenderPassDescriptor! = view.currentRenderPassDescriptor
+            if(renderPassDescriptor == nil){
+                return
+            }
+            
+            
+
+            
+            
             // Executed every frame
             
         }
