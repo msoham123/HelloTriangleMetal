@@ -53,6 +53,7 @@ struct MetalView: NSViewRepresentable {
             self.parent = parent
             super.init()
             initMetal()
+            createRenderPipelineState()
         }
         
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -114,11 +115,18 @@ struct MetalView: NSViewRepresentable {
         }
         
         func initMetal(){
+            // Create link to metal device
             guard let metalDevice = MTLCreateSystemDefaultDevice() else{
                 fatalError("[!] No appropriate Metal Devices found.")
             }
+            
+            // Create default shader library
             self.library = metalDevice.makeDefaultLibrary()
+            
+            // Create commande queue
             self.commandQueue = metalDevice.makeCommandQueue()
+            
+            // Update instance attribute to link
             self.device = metalDevice
         }
         
