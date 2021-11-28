@@ -11,6 +11,8 @@ import MetalKit
 
 struct MetalView: NSViewRepresentable {
     
+    
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
@@ -20,37 +22,45 @@ struct MetalView: NSViewRepresentable {
     }
     
     func makeNSView(context: NSViewRepresentableContext<MetalView>) -> MTKView {
-        
-        let metalView = MTKView()
-        
-        
-        if let metalDevice = MTLCreateSystemDefaultDevice() {
-            metalView.device = metalDevice
-        }
-        else {
-            fatalError("[!] No appropriate Metal Devices found.")
-        }
-        
-        metalView.framebufferOnly = false
-        metalView.enableSetNeedsDisplay = false
-        metalView.delegate = context.coordinator
-        metalView.clearColor = MTLClearColorMake(0.0, 1.0, 0.0, 1.0)
-        
-        return metalView
+            
+            let metalView = MTKView()
+            
+            if let metalDevice = MTLCreateSystemDefaultDevice() {
+                metalView.device = metalDevice
+            }
+            else {
+                fatalError("[!] No appropriate Metal Devices found.")
+            }
+            
+            metalView.framebufferOnly = false
+            metalView.enableSetNeedsDisplay = false
+            metalView.delegate = context.coordinator
+            metalView.clearColor = MTLClearColorMake(0.0, 1.0, 0.0, 1.0)
+            
+            return metalView
     }
     
     class Coordinator : NSObject, MTKViewDelegate {
         
         var parent: MetalView
         var commandQueue: MTLCommandQueue!
+        var device: MTLDevice!
+        var library: MTLLibrary!
+
         
         init(_ parent: MetalView) {
             self.parent = parent
+            guard let metalDevice = MTLCreateSystemDefaultDevice() else{
+                fatalError("[!] No appropriate Metal Devices found.")
+            }
+            self.device = metalDevice;
+            self.library = self.device.makeDefaultLibrary()!
+            self.commandQueue = self.device.makeCommandQueue()!
             super.init()
         }
         
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-            commandQueue = view.device?.makeCommandQueue()
+            
         }
         
         
@@ -58,28 +68,31 @@ struct MetalView: NSViewRepresentable {
 
             
             // Gives you access to drawable space in your window, useful for rendering pipeline
-            guard let drawable = view.currentDrawable else {
-                return
-            }
+            guard let drawable = view.currentDrawable else { return }
             
-            // Rendering commands go here
-            
-            let commandBuffer = commandQueue.makeCommandBuffer()
+            // Get an available command buffer from the queue
+            guard let commandBuffer = commandQueue.makeCommandBuffer() else {return}
         
-            let renderPassDescriptor: MTLRenderPassDescriptor! = view.currentRenderPassDescriptor
-            if(renderPassDescriptor == nil){
-                return
-            }
+            // Get the MTLRenderPassDescriptor from the MTKView argument
+            guard let renderPassDescriptor: MTLRenderPassDescriptor = view.currentRenderPassDescriptor else { return }
             
-            let commandEncoder: MTLRenderCommandEncoder! = commandBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor)
+            // Clear color from green to red
+            renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1, 0, 0, 1)
+
+            // Make MTLRenderCommandEncoder using renderPassDescriptor
+            guard let renderCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
             
-            commandEncoder.endEncoding()
+            // TODO: Encode drawing commands
             
-            commandBuffer?.present(drawable)
-            commandBuffer?.commit()
+            // End encoding in the encoder
+            renderCommandEncoder.endEncoding()
             
-            // Executed every frame
+            // Send final rendered result to MTKView when done rendering
+            commandBuffer.present(drawable)
             
+            // Send encoded buffer to GPU
+            commandBuffer.commit()
+                        
         }
     }
 }
