@@ -23,6 +23,7 @@ struct MetalView: NSViewRepresentable {
         
         let metalView = MTKView()
         
+        
         if let metalDevice = MTLCreateSystemDefaultDevice() {
             metalView.device = metalDevice
         }
@@ -52,6 +53,7 @@ struct MetalView: NSViewRepresentable {
             commandQueue = view.device?.makeCommandQueue()
         }
         
+        
         func draw(in view: MTKView) {
 
             
@@ -71,7 +73,10 @@ struct MetalView: NSViewRepresentable {
             
             let commandEncoder: MTLRenderCommandEncoder! = commandBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor)
             
+            commandEncoder.endEncoding()
             
+            commandBuffer?.present(drawable)
+            commandBuffer?.commit()
             
             // Executed every frame
             
