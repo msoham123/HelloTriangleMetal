@@ -51,8 +51,8 @@ struct MetalView: NSViewRepresentable {
         
         init(_ parent: MetalView) {
             self.parent = parent
-            initMetal()
             super.init()
+            initMetal()
         }
         
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
