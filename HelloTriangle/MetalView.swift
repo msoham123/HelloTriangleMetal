@@ -40,7 +40,8 @@ struct MetalView: NSViewRepresentable {
     
     class Coordinator : NSObject, MTKViewDelegate {
         
-        var parent: MetalView!
+        var parent: MetalView
+        var commandQueue: MTLCommandQueue!
         
         init(_ parent: MetalView) {
             self.parent = parent
@@ -48,11 +49,12 @@ struct MetalView: NSViewRepresentable {
         }
         
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-            
+            commandQueue = view.device?.makeCommandQueue()
         }
         
         func draw(in view: MTKView) {
 
+            
             // Gives you access to drawable space in your window, useful for rendering pipeline
             guard let drawable = view.currentDrawable else {
                 return
@@ -60,14 +62,15 @@ struct MetalView: NSViewRepresentable {
             
             // Rendering commands go here
             
+            let commandBuffer = commandQueue.makeCommandBuffer()
         
             let renderPassDescriptor: MTLRenderPassDescriptor! = view.currentRenderPassDescriptor
             if(renderPassDescriptor == nil){
                 return
             }
             
+            let commandEncoder: MTLRenderCommandEncoder! = commandBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor)
             
-
             
             
             // Executed every frame
