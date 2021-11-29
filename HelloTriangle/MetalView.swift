@@ -81,7 +81,8 @@ struct MetalView: NSViewRepresentable {
             guard let renderCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
             
             // Set the render pipeline state
-            renderEncoder.setRenderPipelineState(pipelineState)
+            renderEncoder.setRenderPipelineState(self.pipelineState)
+            
 
             // Set the buffer for the vertex shader to use
             renderCommandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
