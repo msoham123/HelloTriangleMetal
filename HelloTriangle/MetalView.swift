@@ -12,7 +12,6 @@ import MetalKit
 struct MetalView: NSViewRepresentable {
     
     
-    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
@@ -47,6 +46,7 @@ struct MetalView: NSViewRepresentable {
         var device: MTLDevice!
         var library: MTLLibrary!
         var renderPipelineState:MTLRenderPipelineState!
+        let vertexBuffer: MTLBuffer!
 
         
         init(_ parent: MetalView) {
@@ -80,6 +80,9 @@ struct MetalView: NSViewRepresentable {
             guard let renderCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
             
             // TODO: Encode drawing commands
+            
+            // Set the buffer for the vertex shader to use
+            renderCommandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
             
             // End encoding in the encoder
             renderCommandEncoder.endEncoding()
@@ -128,6 +131,25 @@ struct MetalView: NSViewRepresentable {
             
             // Update instance attribute to link
             self.device = metalDevice
+        }
+        
+        func createVertexBuffer(){
+            
+            // Create our vertex data which represents triangle
+            
+            let vertices = [
+                simd_float4(-1, -1, 150, 10),
+                simd_float4(0, 1, 150, 10)
+                simd_float4(1, -1, 150, 10),
+            ]
+            
+            // Copy vertex data to vertex buffer
+            self.vertexBuffer = device.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<simd_float4>.stride, options: [])!
+            
+            
+            
+            
+            
         }
         
     }
