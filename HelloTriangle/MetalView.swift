@@ -75,7 +75,7 @@ struct MetalView: NSViewRepresentable {
             guard let renderPassDescriptor: MTLRenderPassDescriptor = view.currentRenderPassDescriptor else { return }
             
             // Clear color from green to red
-            renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1, 0, 0, 1)
+            renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 0)
 
             // Make MTLRenderCommandEncoder using renderPassDescriptor
             guard let renderCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
@@ -143,9 +143,9 @@ struct MetalView: NSViewRepresentable {
             // Create our vertex data which represents triangle
             
             let vertices = [
-                simd_float4(-1, -1, 150, 10),
-                simd_float4(0, 1, 150, 10),
-                simd_float4(1, -1, 150, 10),
+                simd_float4(-1, -1, 150, 0),
+                simd_float4(0, 1, 0, 150),
+                simd_float4(1, -1, 0, 0),
             ]
             
             // Copy vertex data to vertex buffer
