@@ -15,14 +15,13 @@ struct Vertex{
 };
 
 vertex Vertex vertexShader( constant float4* vertices [[buffer(0)]], uint id [[vertex_id]]){
-    float4 current = *(vertices+id);
-    Vertex vert;
-    vert.color = float2(current.z, current.w);
-    vert.pos = float4(current.x, current.y, 1, 0.5);
-    return vert;
+    return {
+            .color = vertices[id].zw,
+            .pos =  float4(vertices[id].xy, 1.0, 1.0),
+    };
 }
 
 fragment float4 fragmentShader(){
-    return float4(1);
+    return in;
 }
 
