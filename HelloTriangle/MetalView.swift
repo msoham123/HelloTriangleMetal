@@ -54,6 +54,7 @@ struct MetalView: NSViewRepresentable {
             super.init()
             initMetal()
             createRenderPipelineState()
+            createVertexBuffer()
         }
         
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -149,10 +150,6 @@ struct MetalView: NSViewRepresentable {
             
             // Copy vertex data to vertex buffer
             self.vertexBuffer = device.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<simd_float4>.stride, options: [])!
-            
-            
-            
-            
             
         }
         
