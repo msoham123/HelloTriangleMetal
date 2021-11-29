@@ -22,6 +22,6 @@ vertex Vertex vertexShader( constant float4* vertices [[buffer(0)]], uint id [[v
 }
 
 fragment float4 fragmentShader(Vertex vert [[stage_in]]){
-    return float4(vert.color.xy, 0.5, 1.0);
+    return float4(vert.color.x/255, vert.color.y/255, 0.5, 1.0);
 }
 
