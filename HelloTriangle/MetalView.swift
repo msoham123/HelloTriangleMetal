@@ -79,10 +79,14 @@ struct MetalView: NSViewRepresentable {
             // Make MTLRenderCommandEncoder using renderPassDescriptor
             guard let renderCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
             
-            // TODO: Encode drawing commands
-            
+            // Set the render pipeline state
+            renderEncoder.setRenderPipelineState(pipelineState)
+
             // Set the buffer for the vertex shader to use
             renderCommandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+            
+            // Decide what kind of primitive to draw
+            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
             
             // End encoding in the encoder
             renderCommandEncoder.endEncoding()
