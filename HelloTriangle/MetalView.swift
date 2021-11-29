@@ -46,7 +46,7 @@ struct MetalView: NSViewRepresentable {
         var device: MTLDevice!
         var library: MTLLibrary!
         var renderPipelineState:MTLRenderPipelineState!
-        let vertexBuffer: MTLBuffer!
+        var vertexBuffer: MTLBuffer!
 
         
         init(_ parent: MetalView) {
@@ -81,14 +81,13 @@ struct MetalView: NSViewRepresentable {
             guard let renderCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
             
             // Set the render pipeline state
-            renderEncoder.setRenderPipelineState(self.pipelineState)
+            renderCommandEncoder.setRenderPipelineState(self.renderPipelineState)
             
-
             // Set the buffer for the vertex shader to use
-            renderCommandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+            renderCommandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
             
             // Decide what kind of primitive to draw
-            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
+            renderCommandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
             
             // End encoding in the encoder
             renderCommandEncoder.endEncoding()
@@ -112,11 +111,11 @@ struct MetalView: NSViewRepresentable {
             renderPipelineDescriptor.fragmentFunction = library.makeFunction(name: "fragmentShader")
             
             // Output pixel format should match the pixel format of the metal kit view
-//            renderPipelineDescriptor.colorAttachments[0].pixelFormat
+            renderPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
             
             
             do{
-                try device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
+                try self.renderPipelineState = device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
             }catch{
                 fatalError("[!] Failed to create Render Pipeline State")
             }
@@ -145,7 +144,7 @@ struct MetalView: NSViewRepresentable {
             
             let vertices = [
                 simd_float4(-1, -1, 150, 10),
-                simd_float4(0, 1, 150, 10)
+                simd_float4(0, 1, 150, 10),
                 simd_float4(1, -1, 150, 10),
             ]
             
