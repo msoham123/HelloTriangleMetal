@@ -10,18 +10,19 @@ using namespace metal;
 
 
 struct Vertex{
-    float2 color;
+    float4 color;
     float4 pos [[position]];
 };
 
 vertex Vertex vertexShader( constant float4* vertices [[buffer(0)]], uint id [[vertex_id]]){
     return {
-            .color = vertices[id].zw,
-            .pos =  float4(vertices[id].xy, 1.0, 1.0),
+            .color =  float4(vertices[id+3].xyzw),
+            .pos = float4(vertices[id].xyzw),
+
     };
 }
 
 fragment float4 fragmentShader(Vertex vert [[stage_in]]){
-    return float4(vert.color.x/255, vert.color.y/255, 0.5, 1.0);
+    return float4(vert.color.x, vert.color.y, vert.color.z, vert.color.z);
 }
 

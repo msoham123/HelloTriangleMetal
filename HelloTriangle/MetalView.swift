@@ -141,12 +141,22 @@ struct MetalView: NSViewRepresentable {
         func createVertexBuffer(){
             
             // Create our vertex data which represents triangle
+            // FORMAT: 3 x [X,Y,D,P], 3 x [R, G, B, A] ]
             
             let vertices = [
-                simd_float4(-1, -1, 150, 0),
-                simd_float4(0, 1, 0, 150),
-                simd_float4(1, -1, 0, 0),
+                
+                // Vertices Positions
+                simd_float4(-1, -1, 1, 1),
+                simd_float4(0, 1, 1, 1),
+                simd_float4(1, -1, 1, 1),
+                
+                // Vertices Colors
+                simd_float4(1, 0, 0, 1),
+                simd_float4(0, 1, 0, 1),
+                simd_float4(0, 0, 1, 1)
             ]
+            
+            
             
             // Copy vertex data to vertex buffer
             self.vertexBuffer = device.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<simd_float4>.stride, options: [])!
