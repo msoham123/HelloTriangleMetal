@@ -146,10 +146,10 @@ struct MetalView: NSViewRepresentable {
             let vertices = [
                 
                 // Vertices Positions
-                simd_float4(-1, -1, 1, 1),
-                simd_float4(0, 1, 1, 1),
-                simd_float4(1, -1, 1, 1),
-                
+                simd_float4(-0.7, -0.7, 1, 1),
+                simd_float4(0, 0.7, 1, 1),
+                simd_float4(0.7, -0.7, 1, 1),
+            
                 // Vertices Colors
                 simd_float4(1, 0, 0, 1),
                 simd_float4(0, 1, 0, 1),
