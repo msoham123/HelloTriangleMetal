@@ -48,6 +48,11 @@ struct MetalView: NSViewRepresentable {
         var renderPipelineState:MTLRenderPipelineState!
         var vertexBuffer: MTLBuffer!
         var fragmentUniformsBuffer: MTLBuffer!
+        
+        // Time of the last render in units of seconds
+        var lastRenderTime: CFTimeInterval = 0
+        // Current time in units of seconds
+        var currentTime: Double = 0
 
         
         init(_ parent: MetalView) {
@@ -65,6 +70,14 @@ struct MetalView: NSViewRepresentable {
         
         func draw(in view: MTKView) {
 
+            // Get system time
+            let systemTime = CACurrentMediaTime()
+            
+            // Calculate time difference
+            let timeDifference = systemTime - lastRenderTime
+            
+            // Save system time into last render time
+            self.lastRenderTime = systemTime
             
             // Gives you access to drawable space in your window, useful for rendering pipeline
             guard let drawable = view.currentDrawable else { return }
