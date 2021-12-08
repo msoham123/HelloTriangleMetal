@@ -191,8 +191,11 @@ struct MetalView: NSViewRepresentable {
             // Create pointer that points to FragmentUniforms object from buffer
             let uniformPtr = self.fragmentUniformsBuffer.contents().bindMemory(to: FragmentUniforms.self, capacity: 1)
             
+            // Create speed variable to change fade speed
+            let speed = 1.0
+            
             // Use current time to change value of brightness
-            uniformPtr.pointee.brightness = Float((0.5 * cos(self.currentTime)) + 0.5)
+            uniformPtr.pointee.brightness = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
             
             // Increment current time by the interval
             self.currentTime += timeDifference
