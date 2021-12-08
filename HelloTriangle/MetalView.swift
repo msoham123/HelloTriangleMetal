@@ -76,7 +76,10 @@ struct MetalView: NSViewRepresentable {
             // Calculate time difference
             let timeDifference = systemTime - lastRenderTime
             
-            // Save system time into last render time
+            // Update the brightness and time
+            update(timeDifference: timeDifference)
+            
+            // Save system time into last render timex
             self.lastRenderTime = systemTime
             
             // Gives you access to drawable space in your window, useful for rendering pipeline
@@ -182,7 +185,17 @@ struct MetalView: NSViewRepresentable {
             // Create  uniform buffer and fill it with an initial brightness of 1.0
             var fragmentUniforms = FragmentUniforms(brightness: 0.5)
             self.fragmentUniformsBuffer = device.makeBuffer(bytes: &fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, options: [])!
+        }
+        
+        func update(timeDifference: CFTimeInterval){
+            // Create pointer that points to FragmentUniforms object from buffer
+            let uniformPtr = self.fragmentUniformsBuffer.contents().bindMemory(to: FragmentUniforms.self, capacity: 1)
             
+            // Use current time to change value of brightness
+            uniformPtr.pointee.brightness = Float((0.5 * cos(self.currentTime)) + 0.5)
+            
+            // Increment current time by the interval
+            self.currentTime += timeDifference
         }
         
     }
