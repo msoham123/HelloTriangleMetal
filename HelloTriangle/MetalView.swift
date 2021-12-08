@@ -47,6 +47,7 @@ struct MetalView: NSViewRepresentable {
         var library: MTLLibrary!
         var renderPipelineState:MTLRenderPipelineState!
         var vertexBuffer: MTLBuffer!
+        var fragmentUniformsBuffer: MTLBuffer!
 
         
         init(_ parent: MetalView) {
@@ -54,7 +55,7 @@ struct MetalView: NSViewRepresentable {
             super.init()
             initMetal()
             createRenderPipelineState()
-            createVertexBuffer()
+            createBuffers()
         }
         
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -141,7 +142,7 @@ struct MetalView: NSViewRepresentable {
             self.device = metalDevice
         }
         
-        func createVertexBuffer(){
+        func createBuffers(){
             
             // Create our vertex data which represents triangle
             // FORMAT: 3 x [X,Y,D,P], 3 x [R, G, B, A] ]
@@ -163,6 +164,11 @@ struct MetalView: NSViewRepresentable {
             
             // Copy vertex data to vertex buffer
             self.vertexBuffer = device.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<simd_float4>.stride, options: [])!
+            
+            
+            // Create  uniform buffer and fill it with an initial brightness of 1.0
+            var fragmentUniforms = FragmentUniforms(brightness: 1.0)
+            self.fragmentUniformsBuffer = device.makeBuffer(bytes: &fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, options: [])!
             
         }
         

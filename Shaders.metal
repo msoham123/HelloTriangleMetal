@@ -14,9 +14,6 @@ struct Vertex{
     float4 pos [[position]];
 };
 
-struct FragmentUniforms{
-    float brightness;
-};
 
 vertex Vertex vertexShader( constant float4* vertices [[buffer(0)]], uint id [[vertex_id]]){
     return {
@@ -27,7 +24,7 @@ vertex Vertex vertexShader( constant float4* vertices [[buffer(0)]], uint id [[v
 }
 
 fragment float4 fragmentShader(Vertex vert [[stage_in]], constant FragmentUniforms& uniforms [[buffer(0)]] ){
-    return float4(vert.color.x,vert.color.y, vert.color.z, vert.color.w);
+    return float4(uniforms.brightness * vert.color.x, uniforms.brightness * vert.color.y, uniforms.brightness * vert.color.z, vert.color.w);
 }
 
 
