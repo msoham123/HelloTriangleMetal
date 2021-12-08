@@ -89,6 +89,9 @@ struct MetalView: NSViewRepresentable {
             // Decide what kind of primitive to draw
             renderCommandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
             
+//            renderCommandEncoder.bytes
+//            renderCommandEncoder.setFragmentBytes(UnsafeRawPointer, length: Int, index: <#T##Int#>)
+            
             // End encoding in the encoder
             renderCommandEncoder.endEncoding()
             
