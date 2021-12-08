@@ -84,15 +84,15 @@ struct MetalView: NSViewRepresentable {
             // Set the render pipeline state
             renderCommandEncoder.setRenderPipelineState(self.renderPipelineState)
             
-            // Set the buffer for the vertex shader to use
+            // Set the vertex data buffer for the vertex shader to use
             renderCommandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
+            
+            // Set the uniform buffer for the fragment shader to use
+            renderCommandEncoder.setFragmentBuffer(self.fragmentUniformsBuffer, offset: 0, index: 0)
             
             // Decide what kind of primitive to draw
             renderCommandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
-            
-//            renderCommandEncoder.bytes
-//            renderCommandEncoder.setFragmentBytes(UnsafeRawPointer, length: Int, index: <#T##Int#>)
-            
+                        
             // End encoding in the encoder
             renderCommandEncoder.endEncoding()
             
@@ -167,7 +167,7 @@ struct MetalView: NSViewRepresentable {
             
             
             // Create  uniform buffer and fill it with an initial brightness of 1.0
-            var fragmentUniforms = FragmentUniforms(brightness: 1.0)
+            var fragmentUniforms = FragmentUniforms(brightness: 0.5)
             self.fragmentUniformsBuffer = device.makeBuffer(bytes: &fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, options: [])!
             
         }
