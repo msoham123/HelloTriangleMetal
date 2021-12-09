@@ -10,9 +10,9 @@
 
 #include <simd/simd.h>
 
-struct Vertex{
-    simd_float4 color;
+struct VertexData{
     simd_float4 pos;
+    simd_float4 color;
 };
 
 struct FragmentUniforms{

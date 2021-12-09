@@ -173,25 +173,41 @@ struct MetalView: NSViewRepresentable {
         func createBuffers(){
             
             // Create our vertex data which represents triangle
-            // FORMAT: 3 x [X,Y,D,P], 3 x [R, G, B, A] ]
+            // FORMATS: POS [X,Y,D,P], COLOR [R, G, B, A] 
+            
+//            let vertices = [
+//
+//                // Vertices Positions
+//                simd_float4(-0.7, -0.7, 1, 1),
+//                simd_float4(0, 0.7, 1, 1),
+//                simd_float4(0.7, -0.7, 1, 1),
+//
+//                // Vertices Colors
+//                simd_float4(1, 0, 0, 1),
+//                simd_float4(0, 1, 0, 1),
+//                simd_float4(0, 0, 1, 1)
+//            ]
             
             let vertices = [
                 
-                // Vertices Positions
-                simd_float4(-0.7, -0.7, 1, 1),
-                simd_float4(0, 0.7, 1, 1),
-                simd_float4(0.7, -0.7, 1, 1),
-            
-                // Vertices Colors
-                simd_float4(1, 0, 0, 1),
-                simd_float4(0, 1, 0, 1),
-                simd_float4(0, 0, 1, 1)
+                VertexData(
+                    pos: simd_float4(-0.7, -0.7, 1, 1),
+                    color: simd_float4(1, 0, 0, 1)
+                ),
+                VertexData(
+                    pos: simd_float4(0, 0.7, 1, 1),
+                    color: simd_float4(0, 1, 0, 1)
+                ),
+                VertexData(
+                    pos: simd_float4(0.7, -0.7, 1, 1),
+                    color: simd_float4(0, 0, 1, 1)
+                )
+                
             ]
             
             
-            
             // Copy vertex data to vertex buffer
-            self.vertexBuffer = device.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<simd_float4>.stride, options: [])!
+            self.vertexBuffer = device.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<VertexData>.stride, options: [])!
             
             
             // Create  uniform buffer and fill it with an initial brightness of 1.0
