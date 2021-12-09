@@ -10,10 +10,14 @@
 
 #include <simd/simd.h>
 
+struct Vertex{
+    simd_float4 color;
+    simd_float4 pos;
+};
+
 struct FragmentUniforms{
     float brightness;
 };
-
 
 
 #endif /* ShaderDefs_h */

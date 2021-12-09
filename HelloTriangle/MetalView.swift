@@ -11,7 +11,6 @@ import MetalKit
 
 struct MetalView: NSViewRepresentable {
     
-    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
