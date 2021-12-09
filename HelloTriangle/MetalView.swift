@@ -45,8 +45,11 @@ struct MetalView: NSViewRepresentable {
         var device: MTLDevice!
         var library: MTLLibrary!
         var renderPipelineState:MTLRenderPipelineState!
+        
+        
+        // Buffer
         var vertexBuffer: MTLBuffer!
-        var fragmentUniformsBuffer: MTLBuffer!
+        var vertexUniformsBuffer: MTLBuffer!
         
         // Time of the last render in units of seconds
         var lastRenderTime: CFTimeInterval = 0
@@ -105,12 +108,12 @@ struct MetalView: NSViewRepresentable {
             
             // Set the render pipeline state
             renderCommandEncoder.setRenderPipelineState(self.renderPipelineState)
-            
+                        
             // Set the vertex data buffer for the vertex shader to use
             renderCommandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
             
             // Set the uniform buffer for the fragment shader to use
-            renderCommandEncoder.setFragmentBuffer(self.fragmentUniformsBuffer, offset: 0, index: 0)
+            renderCommandEncoder.setVertexBuffer(self.vertexUniformsBuffer, offset: 0, index: 1)
             
             // Decide what kind of primitive to draw
             renderCommandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
@@ -144,7 +147,6 @@ struct MetalView: NSViewRepresentable {
             
             // Output pixel format should match the pixel format of the metal kit view
             renderPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
-            
             
             do{
                 try self.renderPipelineState = device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
@@ -211,13 +213,13 @@ struct MetalView: NSViewRepresentable {
             
             
             // Create  uniform buffer and fill it with an initial brightness of 1.0
-            var fragmentUniforms = FragmentUniforms(brightness: 0.5)
-            self.fragmentUniformsBuffer = device.makeBuffer(bytes: &fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, options: [])!
+            var vertexUniforms = Uniforms(brightness: 0.5)
+            self.vertexUniformsBuffer = device.makeBuffer(bytes: &vertexUniforms, length: MemoryLayout<Uniforms>.stride, options:[])!
         }
         
         func update(timeDifference: CFTimeInterval){
             // Create pointer that points to FragmentUniforms object from buffer
-            let uniformPtr = self.fragmentUniformsBuffer.contents().bindMemory(to: FragmentUniforms.self, capacity: 1)
+            let uniformPtr = self.vertexUniformsBuffer.contents().bindMemory(to: Uniforms.self, capacity: 1)
             
             // Create speed variable to change fade speed
             let speed = 2.0

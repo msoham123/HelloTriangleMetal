@@ -15,7 +15,7 @@ struct VertexData{
     simd_float4 color;
 };
 
-struct FragmentUniforms{
+struct Uniforms{
     float brightness;
 };
 
