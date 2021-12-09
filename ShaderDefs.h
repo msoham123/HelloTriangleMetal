@@ -17,6 +17,7 @@ struct VertexData{
 
 struct Uniforms{
     float brightness;
+    float scale;
 };
 
 

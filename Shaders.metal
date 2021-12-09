@@ -18,12 +18,17 @@ struct VertexOutput{
 
 vertex VertexOutput vertexShader( constant VertexData* vertices [[buffer(0)]], uint id [[vertex_id]], constant Uniforms& uniforms [[buffer(1)]]){
     return {
-            .pos =  vertices[id].pos,
+            .pos =  float4(
+                           uniforms.scale * vertices[id].pos.x,
+                           uniforms.scale * vertices[id].pos.y,
+                           vertices[id].pos.z,
+                           vertices[id].pos.w
+                    ),
             .color = float4(
                           uniforms.brightness * vertices[id].color.x,
                           uniforms.brightness * vertices[id].color.y,
                           uniforms.brightness * vertices[id].color.z,
-                          uniforms.brightness * vertices[id].color.w
+                          vertices[id].color.w
                    )
 
     };

@@ -213,12 +213,12 @@ struct MetalView: NSViewRepresentable {
             
             
             // Create  uniform buffer and fill it with an initial brightness of 1.0
-            var vertexUniforms = Uniforms(brightness: 0.5)
+            var vertexUniforms = Uniforms(brightness: 0.5, scale: 0.5)
             self.vertexUniformsBuffer = device.makeBuffer(bytes: &vertexUniforms, length: MemoryLayout<Uniforms>.stride, options:[])!
         }
         
         func update(timeDifference: CFTimeInterval){
-            // Create pointer that points to FragmentUniforms object from buffer
+            // Create pointer that points to Uniforms object from buffer
             let uniformPtr = self.vertexUniformsBuffer.contents().bindMemory(to: Uniforms.self, capacity: 1)
             
             // Create speed variable to change fade speed
@@ -226,6 +226,9 @@ struct MetalView: NSViewRepresentable {
             
             // Use current time to change value of brightness
             uniformPtr.pointee.brightness = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
+            
+            // Use current time to change value of scale
+            uniformPtr.pointee.scale = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
             
             // Increment current time by the interval
             self.currentTime += timeDifference
