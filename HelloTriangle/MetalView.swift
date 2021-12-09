@@ -53,6 +53,9 @@ struct MetalView: NSViewRepresentable {
         var lastRenderTime: CFTimeInterval = 0
         // Current time in units of seconds
         var currentTime: Double = 0
+        
+        // Semaphore which prevents uniform buffer from cpu with overlapping rendering by GPU
+        let gpuLock = DispatchSemaphore(value: 1)
 
         
         init(_ parent: MetalView) {
@@ -69,6 +72,10 @@ struct MetalView: NSViewRepresentable {
         
         
         func draw(in view: MTKView) {
+            
+            // Wait for synchronization (greater than zero value)
+            gpuLock.wait()
+            
 
             // Get system time
             let systemTime = CACurrentMediaTime()
@@ -114,6 +121,12 @@ struct MetalView: NSViewRepresentable {
             
             // Send final rendered result to MTKView when done rendering
             commandBuffer.present(drawable)
+            
+            // Call when GPU is done drawing
+            commandBuffer.addCompletedHandler { _ in
+                // Increment the semaphore value by one
+                self.gpuLock.signal()
+            }
             
             // Send encoded buffer to GPU
             commandBuffer.commit()
@@ -192,7 +205,7 @@ struct MetalView: NSViewRepresentable {
             let uniformPtr = self.fragmentUniformsBuffer.contents().bindMemory(to: FragmentUniforms.self, capacity: 1)
             
             // Create speed variable to change fade speed
-            let speed = 1.0
+            let speed = 2.0
             
             // Use current time to change value of brightness
             uniformPtr.pointee.brightness = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
