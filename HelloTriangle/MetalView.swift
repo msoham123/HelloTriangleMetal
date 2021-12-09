@@ -213,7 +213,7 @@ struct MetalView: NSViewRepresentable {
             
             
             // Create  uniform buffer and fill it with an initial brightness of 1.0
-            var vertexUniforms = Uniforms(brightness: 0.5, scale: 0.5)
+            var vertexUniforms = Uniforms(brightness: 1, scale: 1)
             self.vertexUniformsBuffer = device.makeBuffer(bytes: &vertexUniforms, length: MemoryLayout<Uniforms>.stride, options:[])!
         }
         
@@ -225,10 +225,10 @@ struct MetalView: NSViewRepresentable {
             let speed = 2.0
             
             // Use current time to change value of brightness
-            uniformPtr.pointee.brightness = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
+//            uniformPtr.pointee.brightness = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
             
             // Use current time to change value of scale
-            uniformPtr.pointee.scale = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
+//            uniformPtr.pointee.scale = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
             
             // Increment current time by the interval
             self.currentTime += timeDifference
