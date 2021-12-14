@@ -83,10 +83,7 @@ struct MetalView: NSViewRepresentable {
             let systemTime = CACurrentMediaTime()
             
             // Calculate time difference
-            let timeDifference = systemTime - lastRenderTime
-            
-            // Update the brightness and time
-            update(timeDifference: timeDifference)
+            var timeDifference = systemTime - lastRenderTime
             
             // Save system time into last render timex
             self.lastRenderTime = systemTime
@@ -113,7 +110,13 @@ struct MetalView: NSViewRepresentable {
             renderCommandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
             
             // Set the uniform buffer for the fragment shader to use
-            renderCommandEncoder.setVertexBuffer(self.vertexUniformsBuffer, offset: 0, index: 1)
+//            renderCommandEncoder.setVertexBuffer(self.vertexUniformsBuffer, offset: 0, index: 1)
+            
+            // Update the time
+            renderCommandEncoder.setVertexBytes(&timeDifference, length: 0, index: 1)
+            
+            // Increment current time by the interval
+            self.currentTime += timeDifference
             
             // Decide what kind of primitive to draw
             renderCommandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
@@ -217,12 +220,12 @@ struct MetalView: NSViewRepresentable {
             self.vertexUniformsBuffer = device.makeBuffer(bytes: &vertexUniforms, length: MemoryLayout<Uniforms>.stride, options:[])!
         }
         
-        func update(timeDifference: CFTimeInterval){
+//        func update(timeDifference: CFTimeInterval, encoder: MTLRenderCommandEncoder, index: Int){
             // Create pointer that points to Uniforms object from buffer
-            let uniformPtr = self.vertexUniformsBuffer.contents().bindMemory(to: Uniforms.self, capacity: 1)
+//            let uniformPtr = self.vertexUniformsBuffer.contents().bindMemory(to: Uniforms.self, capacity: 1)
             
             // Create speed variable to change fade speed
-            let speed = 2.0
+//            let speed = 2.0
             
             // Use current time to change value of brightness
 //            uniformPtr.pointee.brightness = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
@@ -230,9 +233,11 @@ struct MetalView: NSViewRepresentable {
             // Use current time to change value of scale
 //            uniformPtr.pointee.scale = Float((0.5 * cos(speed * self.currentTime)) + 0.5)
             
-            // Increment current time by the interval
-            self.currentTime += timeDifference
-        }
+//            encoder.setVertexBytes(&timeDifference, length: 0, index: index)
+//
+//            // Increment current time by the interval
+//            self.currentTime += timeDifference
+//        }
         
     }
     
