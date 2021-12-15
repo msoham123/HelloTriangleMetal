@@ -34,6 +34,7 @@ struct MetalView: NSViewRepresentable {
             metalView.enableSetNeedsDisplay = false
             metalView.delegate = context.coordinator
             metalView.clearColor = MTLClearColorMake(0.0, 1.0, 0.0, 1.0)
+            metalView.preferredFramesPerSecond = 60
             
             return metalView
     }
@@ -51,13 +52,15 @@ struct MetalView: NSViewRepresentable {
         var vertexBuffer: MTLBuffer!
         var vertexUniformsBuffer: MTLBuffer!
         
-        // Time of the last render in units of seconds
-        var lastRenderTime: CFTimeInterval = 0
+
         // Current time in units of seconds
-        var currentTime: Double = 0
+        var time: Float = 0
         
+        // Target FPS
+        let FPS: Int = 60
+    
         // Semaphore which prevents uniform buffer from cpu with overlapping rendering by GPU
-        let gpuLock = DispatchSemaphore(value: 1)
+//        let gpuLock = DispatchSemaphore(value: 1)
 
         
         init(_ parent: MetalView) {
@@ -76,17 +79,7 @@ struct MetalView: NSViewRepresentable {
         func draw(in view: MTKView) {
             
             // Wait for synchronization (greater than zero value)
-            gpuLock.wait()
-            
-
-            // Get system time
-            let systemTime = CACurrentMediaTime()
-            
-            // Calculate time difference
-            var timeDifference = systemTime - lastRenderTime
-            
-            // Save system time into last render timex
-            self.lastRenderTime = systemTime
+//            gpuLock.wait()
             
             // Gives you access to drawable space in your window, useful for rendering pipeline
             guard let drawable = view.currentDrawable else { return }
@@ -112,30 +105,29 @@ struct MetalView: NSViewRepresentable {
             // Set the uniform buffer for the fragment shader to use
 //            renderCommandEncoder.setVertexBuffer(self.vertexUniformsBuffer, offset: 0, index: 1)
             
-            // Update the time
-            renderCommandEncoder.setVertexBytes(&timeDifference, length: 0, index: 1)
-            
-            // Increment current time by the interval
-            self.currentTime += timeDifference
+            // Update the time by passing timeDifference to vertex shader
+            renderCommandEncoder.setVertexBytes(&self.time, length: MemoryLayout<Float>.stride, index: 1)
             
             // Decide what kind of primitive to draw
             renderCommandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
                         
-            // End encoding in the encoder
+            // End encoding tttin the encoder
             renderCommandEncoder.endEncoding()
             
             // Send final rendered result to MTKView when done rendering
             commandBuffer.present(drawable)
             
             // Call when GPU is done drawing
-            commandBuffer.addCompletedHandler { _ in
-                // Increment the semaphore value by one
-                self.gpuLock.signal()
-            }
+//            commandBuffer.addCompletedHandler { _ in
+//                // Increment the semaphore value by one
+////                self.gpuLock.signal()
+//            }
             
             // Send encoded buffer to GPU
             commandBuffer.commit()
-                        
+            
+            // Increment current time by the interval
+            self.time += 1/Float(FPS)
         }
         
         // Create rendering pipeline, which loads shaders using device and outputs to the MTKView
