@@ -109,7 +109,7 @@ struct MetalView: NSViewRepresentable {
             renderCommandEncoder.setVertexBytes(&self.time, length: MemoryLayout<Float>.stride, index: 1)
             
             // Decide what kind of primitive to draw
-            renderCommandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
+            renderCommandEncoder.drawPrimitives(type: MTLPrimitiveType.triangle, vertexStart: 0, vertexCount: 3)
                         
             // End encoding tttin the encoder
             renderCommandEncoder.endEncoding()
